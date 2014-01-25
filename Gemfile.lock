@@ -90,6 +90,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.8.4)
     multipart-post (2.0.0)
+    mysql (2.9.1)
     oj (2.5.4)
     polyglot (0.3.3)
     pry (0.9.12.4)
@@ -165,6 +166,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   mocha
+  mysql
   oj
   pry
   quiet_assets
