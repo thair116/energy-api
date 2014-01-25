@@ -5,5 +5,6 @@ class Article < ActiveRecord::Base
   has_many                :authors, through: :authorships
   has_many                :comments
 
+
   include Searchable
 end
