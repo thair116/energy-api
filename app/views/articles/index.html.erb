@@ -1,17 +1,24 @@
-<h1>Listing articles</h1>
+<h1><%= controller.action_name == 'search' ? 'Searching articles' : 'Listing articles' %></h1>
   <hr>
 
   <%= form_tag search_articles_path, method: 'get' do %>
-    <%= label_tag :query %>
-    <%= text_field_tag :q, params[:q] %>
-    <%= submit_tag :search %>
+    <div class="input-group">
+  <%= text_field_tag :q, params[:q], class: 'form-control', placeholder: 'Search...' %>
+
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-search"></span>
+    </button>
+  </span>
+</div>
+
   <% end %>
 
   <hr>
 
 
 
-<table>
+<table class="table table-hover">
   <thead>
     <tr>
       <th>Title</th>
@@ -29,15 +36,19 @@
         <td><%= article.title %></td>
         <td><%= article.content %></td>
         <td><%= article.published_on %></td>
-        <td><%= link_to 'Show', article %></td>
-        <td><%= link_to 'Edit', edit_article_path(article) %></td>
-        <td><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td style="width: 50px"><%= link_to 'Show', article , class: 'btn btn-default btn-xs'%></td>
+        <td style="width: 50px"><%= link_to 'Edit', edit_article_path(article) , class: 'btn btn-default btn-xs'%></td>
+        <td style="width: 50px"><%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } , class: 'btn btn-default btn-xs'%></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
+<hr>
 
-<%= link_to 'New Article', new_article_path %>  <%= link_to 'All Articles', articles_path if params[:q] %>
+<p style="text-align: center; margin-bottom: 21px">
+  <%= link_to 'New Article', new_article_path, class: 'btn btn-primary btn-xs', style: 'color: #fff' %>  
+  <%= link_to 'All Articles', articles_path, class: 'btn btn-primary btn-xs', style: 'color: #fff' if params[:q] %>
 
+
+</p>
