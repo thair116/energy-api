@@ -56,3 +56,4 @@ gem "elasticsearch-rails", git: "git@github.com:elasticsearch/elasticsearch-rail
 gem "oj"
 gem "pry", group: "development"
 gem "quiet_assets", group: "development"
+gem "sidekiq"
