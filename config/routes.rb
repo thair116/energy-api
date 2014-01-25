@@ -1,13 +1,13 @@
 EnergyApi::Application.routes.draw do
   get '/search', to: 'search#index', as: 'search'
-  resources :authorships
-
-  resources :authors
+  # resources :authorships
 
   resources :categories
 
+  resources :data
+
   root to: 'search#index'
-  resources :articles do
+  resources :series do
     collection { get :search }
   end
 

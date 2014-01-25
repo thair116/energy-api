@@ -12,37 +12,37 @@ module Searchable
     #
     settings index: { number_of_shards: 1, number_of_replicas: 0 } do
       mapping do
-        indexes :title, type: 'multi_field' do
-          indexes :title,     analyzer: 'snowball'
+        indexes :name, type: 'multi_field' do
+          indexes :name,     analyzer: 'snowball'
           indexes :tokenized, analyzer: 'simple'
         end
 
-        indexes :content, type: 'multi_field' do
-          indexes :content,   analyzer: 'snowball'
+        indexes :description, type: 'multi_field' do
+          indexes :description,   analyzer: 'snowball'
           indexes :tokenized, analyzer: 'simple'
         end
 
-        indexes :published_on, type: 'date'
+        # indexes :published_on, type: 'date'
 
-        indexes :authors do
-          indexes :full_name, type: 'multi_field' do
-            indexes :full_name
-            indexes :raw, analyzer: 'keyword'
-          end
-        end
+        # indexes :authors do
+        #   indexes :full_name, type: 'multi_field' do
+        #     indexes :full_name
+        #     indexes :raw, analyzer: 'keyword'
+        #   end
+        # end
 
-        indexes :categories, analyzer: 'keyword'
+        # indexes :categories, analyzer: 'keyword'
 
-        indexes :comments, type: 'nested' do
-          indexes :body, analyzer: 'snowball'
-          indexes :stars
-          indexes :pick
-          indexes :user, analyzer: 'keyword'
-          indexes :user_location, type: 'multi_field' do
-            indexes :user_location
-            indexes :raw, analyzer: 'keyword'
-          end
-        end
+        # indexes :comments, type: 'nested' do
+        #   indexes :body, analyzer: 'snowball'
+        #   indexes :stars
+        #   indexes :pick
+        #   indexes :user, analyzer: 'keyword'
+        #   indexes :user_location, type: 'multi_field' do
+        #     indexes :user_location
+        #     indexes :raw, analyzer: 'keyword'
+        #   end
+        # end
       end
     end
 
@@ -55,14 +55,14 @@ module Searchable
 
     # Customize the JSON serialization for Elasticsearch
     #
-    def as_indexed_json(options={})
-      hash = self.as_json(
-        include: { authors:    { methods: [:full_name], only: [:full_name] },
-                   comments:   { only: [:body, :stars, :pick, :user, :user_location] }
-                 })
-      hash['categories'] = self.categories.map(&:title)
-      hash
-    end
+    # def as_indexed_json(options={})
+    #   hash = self.as_json(
+    #     include: { authors:    { methods: [:full_name], only: [:full_name] },
+    #                comments:   { only: [:body, :stars, :pick, :user, :user_location] }
+    #              })
+    #   hash['categories'] = self.categories.map(&:title)
+    #   hash
+    # end
   end
 
   module ClassMethods
@@ -92,107 +92,112 @@ module Searchable
           pre_tags: ['<em class="label label-highlight">'],
           post_tags: ['</em>'],
           fields: {
-            title:    { number_of_fragments: 0 },
-            abstract: { number_of_fragments: 0 },
-            content:  { fragment_size: 50 }
+            name:    { number_of_fragments: 0 },
+            description: { number_of_fragments: 0 }
           }
         },
 
         filter: {},
 
-        facets: {
-          categories: {
-            terms: {
-              field: 'categories'
-            },
-            facet_filter: {}
-          },
-          authors: {
-            terms: {
-              field: 'authors.full_name.raw'
-            },
-            facet_filter: {}
-          },
-          published: {
-            date_histogram: {
-              field: 'published_on',
-              interval: 'week'
-            },
-            facet_filter: {}
-          }
-        }
+        # facets: {
+        #   categories: {
+        #     terms: {
+        #       field: 'categories'
+        #     },
+        #     facet_filter: {}
+        #   },
+        #   authors: {
+        #     terms: {
+        #       field: 'authors.full_name.raw'
+        #     },
+        #     facet_filter: {}
+        #   },
+        #   published: {
+        #     date_histogram: {
+        #       field: 'published_on',
+        #       interval: 'week'
+        #     },
+        #     facet_filter: {}
+        #   }
+        # }
       }
 
       unless query.blank?
-        @search_definition[:query] = {
+         @search_definition[:query] = {
           bool: {
             should: [
               { multi_match: {
                   query: query,
-                  fields: ['title^10', 'abstract^2', 'content'],
+                  fields: ['name^10', 'description^2'],
                   operator: 'and'
                 }
               }
             ]
           }
         }
+
+#   multi_match: {
+#     query: query,
+#     fields: [ "name", "description" ]
+#   }
+# }
       else
         @search_definition[:query] = { match_all: {} }
-        @search_definition[:sort]  = { published_on: 'desc' }
+        @search_definition[:sort]  = {  }
       end
 
-      if options[:category]
-        f = { term: { categories: options[:category] } }
+      # if options[:category]
+      #   f = { term: { categories: options[:category] } }
 
-        __set_filters.(:authors, f)
-        __set_filters.(:published, f)
+      #   __set_filters.(:authors, f)
+      #   __set_filters.(:published, f)
 
-        @search_definition[:facets][:published][:facet_filter]       ||= {}
-        @search_definition[:facets][:published][:facet_filter][:and] ||= []
-        @search_definition[:facets][:published][:facet_filter][:and] << f
-      end
+      #   @search_definition[:facets][:published][:facet_filter]       ||= {}
+      #   @search_definition[:facets][:published][:facet_filter][:and] ||= []
+      #   @search_definition[:facets][:published][:facet_filter][:and] << f
+      # end
 
-      if options[:author]
-        f = { term: { 'authors.full_name.raw' => options[:author] } }
+      # if options[:author]
+      #   f = { term: { 'authors.full_name.raw' => options[:author] } }
 
-        __set_filters.(:categories, f)
-        __set_filters.(:published, f)
+      #   __set_filters.(:categories, f)
+      #   __set_filters.(:published, f)
 
-        @search_definition[:facets][:published][:facet_filter]       ||= {}
-        @search_definition[:facets][:published][:facet_filter][:and] ||= []
-        @search_definition[:facets][:published][:facet_filter][:and] << f
-      end
+      #   @search_definition[:facets][:published][:facet_filter]       ||= {}
+      #   @search_definition[:facets][:published][:facet_filter][:and] ||= []
+      #   @search_definition[:facets][:published][:facet_filter][:and] << f
+      # end
 
-      if options[:published_week]
-        f = {
-          range: {
-            published_on: {
-              gte: options[:published_week],
-              lte: "#{options[:published_week]}||+1w"
-            }
-          }
-        }
+      # if options[:published_week]
+      #   f = {
+      #     range: {
+      #       published_on: {
+      #         gte: options[:published_week],
+      #         lte: "#{options[:published_week]}||+1w"
+      #       }
+      #     }
+      #   }
 
-        __set_filters.(:categories, f)
-        __set_filters.(:authors, f)
-      end
+      #   __set_filters.(:categories, f)
+      #   __set_filters.(:authors, f)
+      # end
 
-      if query.present? && options[:comments]
-        @search_definition[:query][:bool][:should] ||= []
-        @search_definition[:query][:bool][:should] << {
-          nested: {
-            path: 'comments',
-            query: {
-              multi_match: {
-                query: query,
-                fields: ['body'],
-                operator: 'and'
-              }
-            }
-          }
-        }
-        @search_definition[:highlight][:fields].update 'comments.body' => { fragment_size: 50 }
-      end
+      # if query.present? && options[:comments]
+      #   @search_definition[:query][:bool][:should] ||= []
+      #   @search_definition[:query][:bool][:should] << {
+      #     nested: {
+      #       path: 'comments',
+      #       query: {
+      #         multi_match: {
+      #           query: query,
+      #           fields: ['body'],
+      #           operator: 'and'
+      #         }
+      #       }
+      #     }
+      #   }
+      #   @search_definition[:highlight][:fields].update 'comments.body' => { fragment_size: 50 }
+      # end
 
       if options[:sort]
         @search_definition[:sort]  = { options[:sort] => 'desc' }
@@ -204,13 +209,13 @@ module Searchable
           text: query,
           suggest_title: {
             term: {
-              field: 'title.tokenized',
+              field: 'name.tokenized',
               suggest_mode: 'always'
             }
           },
           suggest_body: {
             term: {
-              field: 'content.tokenized',
+              field: 'description.tokenized',
               suggest_mode: 'always'
             }
           }

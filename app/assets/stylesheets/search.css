@@ -1,3 +1,8 @@
+.top{
+  padding:2px;
+  background: #eee;
+}
+
 h1 {
   font-size: 28px !important;
   color: #a3a3a3 !important;
@@ -6,7 +11,7 @@ h1 {
 }
 
 .label-highlight {
-  background: #f6fbfc !important;
+  background: #ADE7FF !important;
   box-shadow: 0px 1px 0px rgba(0,0,0,0.15);
   padding: 0.2em 0.4em 0.2em 0.4em !important;
 }

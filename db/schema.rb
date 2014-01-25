@@ -11,61 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140125043502) do
+ActiveRecord::Schema.define(version: 20140125043455) do
 
-  create_table "articles", force: true do |t|
-    t.string   "title"
-    t.text     "content"
-    t.date     "published_on"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "abstract"
-    t.string   "url"
-    t.integer  "shares"
-  end
-
-  create_table "articles_categories", force: true do |t|
-    t.integer "article_id"
-    t.integer "category_id"
-  end
-
-  add_index "articles_categories", ["article_id"], name: "index_articles_categories_on_article_id"
-  add_index "articles_categories", ["category_id"], name: "index_articles_categories_on_category_id"
-
-  create_table "authors", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
+  create_table "categories", id: false, force: true do |t|
+    t.integer  "category_id"
+    t.integer  "parent_id"
+    t.string   "name"
+    t.string   "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "authorships", force: true do |t|
-    t.integer  "article_id"
-    t.integer  "author_id"
+  create_table "data", force: true do |t|
+    t.date     "date"
+    t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "authorships", ["article_id"], name: "index_authorships_on_article_id"
-  add_index "authorships", ["author_id"], name: "index_authorships_on_author_id"
-
-  create_table "categories", force: true do |t|
-    t.string   "title"
+  create_table "series", force: true do |t|
+    t.string   "series_id"
+    t.string   "name"
+    t.string   "units"
+    t.string   "f"
+    t.text     "description"
+    t.string   "copyright"
+    t.string   "source"
+    t.string   "iso3116"
+    t.date     "start"
+    t.date     "end"
+    t.date     "last_updated"
+    t.float    "lat"
+    t.float    "lon"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "comments", force: true do |t|
-    t.text     "body"
-    t.string   "user"
-    t.string   "user_location"
-    t.integer  "stars"
-    t.boolean  "pick"
-    t.integer  "article_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "comments", ["article_id"], name: "index_comments_on_article_id"
 
 end
