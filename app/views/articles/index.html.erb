@@ -31,10 +31,10 @@
   </thead>
 
   <tbody>
-    <% @articles.each do |article| %>
+    <% @articles.__send__ controller.action_name == 'search' ? :each_with_hit : :each do |article, hit| %>
       <tr>
-        <td><%= article.title %></td>
-        <td><%= article.content %></td>
+        <td><%= hit.try(:highlight).try(:title)   ? hit.highlight.title.join.html_safe : article.title %></td>
+        <td><%= hit.try(:highlight).try(:content) ? hit.highlight.content.join('&hellip;').html_safe : article.content %></td>
         <td><%= article.published_on %></td>
         <td style="width: 50px"><%= link_to 'Show', article , class: 'btn btn-default btn-xs'%></td>
         <td style="width: 50px"><%= link_to 'Edit', edit_article_path(article) , class: 'btn btn-default btn-xs'%></td>
