@@ -6,6 +6,9 @@ class Series < ActiveRecord::Base
   # has_many                :authors, through: :authorships
   # has_many                :comments
 
+  def category_id
+    CategoriesChildSeries.where(series_id_name: series_id).first.category_id
+  end
 
   include Searchable
 end
