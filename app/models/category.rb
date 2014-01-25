@@ -1,4 +1,3 @@
 class Category < ActiveRecord::Base
-  belongs_to :category
-  has_many :categories
+  has_many :categories_child_series
 end
