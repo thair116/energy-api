@@ -3,13 +3,25 @@ require 'test_helper'
 class ArticlesControllerTest < ActionController::TestCase
   setup do
     @article = articles(:one)
+
+    Article.__elasticsearch__.import
+    Article.__elasticsearch__.refresh_index!
   end
+
 
   test "should get index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:articles)
   end
+
+  test "should get search results" do
+    get :search, q: 'mystring'
+    assert_response :success
+    assert_not_nil assigns(:articles)
+    assert_equal 2, assigns(:articles).size
+  end
+
 
   test "should get new" do
     get :new

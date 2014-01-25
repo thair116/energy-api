@@ -1,4 +1,15 @@
 <h1>Listing articles</h1>
+  <hr>
+
+  <%= form_tag search_articles_path, method: 'get' do %>
+    <%= label_tag :query %>
+    <%= text_field_tag :q, params[:q] %>
+    <%= submit_tag :search %>
+  <% end %>
+
+  <hr>
+
+
 
 <table>
   <thead>
@@ -28,4 +39,5 @@
 
 <br>
 
-<%= link_to 'New Article', new_article_path %>
+<%= link_to 'New Article', new_article_path %>  <%= link_to 'All Articles', articles_path if params[:q] %>
+
