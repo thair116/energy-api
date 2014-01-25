@@ -55,3 +55,4 @@ gem "elasticsearch-model", git: "git@github.com:elasticsearch/elasticsearch-rail
 gem "elasticsearch-rails", git: "git@github.com:elasticsearch/elasticsearch-rails.git"
 gem "oj"
 gem "pry", group: "development"
+gem "quiet_assets", group: "development"

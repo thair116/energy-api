@@ -1,4 +1,5 @@
 EnergyApi::Application.configure do
+  config.assets.logger = false
   
   console do
     config.console = Pry
