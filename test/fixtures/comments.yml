@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  body: MyText
+  user: MyString
+  user_location: MyString
+  stars: 1
+  pick: false
+  article_id: 
+
+two:
+  body: MyText
+  user: MyString
+  user_location: MyString
+  stars: 1
+  pick: false
+  article_id: 
