@@ -12,3 +12,13 @@ The `basic` version provides a simple integration for a simple Rails model, `Art
 to include the search engine support in your model, automatically index changes to records,
 and use a form to perform simple search require 'requests.'
 
+
+== [2] Pretty
+
+The `pretty` template builds on the `basic` version and brings couple of improvements:
+
+* Using the [Bootstrap](http://getbootstrap.com) framework to enhance the visual style of the application
+* Using an `Article.search` class method to customize the default search definition
+* Highlighting matching phrases in search results
+* Paginating results with Kaminari
+
