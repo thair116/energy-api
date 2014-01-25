@@ -22,3 +22,18 @@ The `pretty` template builds on the `basic` version and brings couple of improve
 * Highlighting matching phrases in search results
 * Paginating results with Kaminari
 
+
+== [3] Expert
+
+The `expert` template changes to a complex database schema with model relationships: article belongs
+to a category, has many authors and comments.
+
+* The Elasticsearch integration is refactored into the `Searchable` concern
+* A complex mapping for the index is defined
+* A custom serialization is defined in `Article#as_indexed_json`
+* The `search` method is amended with facets and suggestions
+* A [Sidekiq](http://sidekiq.org) worker for handling index updates in background is added
+* A custom `SearchController` with associated view is added
+* A Rails initializer is added to customize the Elasticsearch client configuration
+* Seed script and example data from New York Times is added
+
