@@ -85,6 +85,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.8.4)
     multipart-post (2.0.0)
+    oj (2.5.4)
     polyglot (0.3.3)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -142,6 +143,7 @@ DEPENDENCIES
   jquery-rails
   kaminari
   mocha
+  oj
   rails (= 4.0.2)
   sdoc
   sqlite3
