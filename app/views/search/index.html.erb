@@ -51,7 +51,6 @@
 <% if @series.size < 1 && (suggestions = @series.response.response['suggest']) && suggestions.present?  %>
 <div class="col-md-12">
   <p class="alert alert-warning">
-    <%= suggestions %>
     No documents have been found. Maybe you mean
     <%= suggestions.map { |k,v| v.first['options'] }.flatten.map {|v| v['text']}.uniq.map do |term|
       link_to term, search_path(params.merge q: term)
@@ -117,7 +116,8 @@
 
 <div class="col-md-9">
   <div id="results">
-    <% @series.each do |series|  %>
+    <% @series.each_with_index do |series, index|  %>
+    <% series_2 = @series_2[index] %>
       <div class="result">
         <h4 class="title">
           <%= (series.try(:highlight).try(:name) ? series.highlight.name.join.html_safe : series.name) %>
@@ -146,7 +146,9 @@
         <p class="text-muted">
         <!--   <small>Authors: <%# article.authors.map(&:full_name).to_sentence %></small> |
           <small>Published: <%# article.published_on %></small> | -->
-          API source: <a href="www.google.com">http://www.eia.gov/beta/api/qb.cfm?category=206&sdid=ELEC.GEN.COW-AK-98.A  </a>
+          <% url = "http://www.eia.gov/beta/api/qb.cfm?category=#{series_2.category_id}&sdid=#{series_2.series_id}" %>
+          API source: <%= link_to url,url %>
+
         </p>
       </div>
     <% end %>
