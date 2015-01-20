@@ -28,7 +28,7 @@ development:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: myapp_development
+  database: energy_development
   pool: 5
   username: energy
   password: energy
@@ -38,7 +38,7 @@ test:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: myapp_test
+  database: energy_test
   pool: 5
   username: energy
   password: energy
@@ -48,8 +48,8 @@ production:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: rails
+  database: energy
   pool: 5
-  username: rails
+  username: energy
   password: vPD33wZTHd
-  socket: /var/mysql/mysql.sock
+  socket: /var/run/mysqld/mysqld.sock
