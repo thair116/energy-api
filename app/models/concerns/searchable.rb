@@ -128,7 +128,7 @@ module Searchable
             should: [
               { multi_match: {
                   query: query,
-                  fields: ['name^10', 'description^2'],
+                  fields: ['name^2', 'description'],
                   operator: 'and'
                 }
               }
@@ -136,11 +136,7 @@ module Searchable
           }
         }
 
-#   multi_match: {
-#     query: query,
-#     fields: [ "name", "description" ]
-#   }
-# }
+
       else
         @search_definition[:query] = { match_all: {} }
         @search_definition[:sort]  = {  }
@@ -209,13 +205,7 @@ module Searchable
           text: query,
           suggest_title: {
             term: {
-              field: 'name.tokenized',
-              suggest_mode: 'always'
-            }
-          },
-          suggest_body: {
-            term: {
-              field: 'description.tokenized',
+              field: 'name',
               suggest_mode: 'always'
             }
           }
