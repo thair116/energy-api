@@ -11,6 +11,7 @@ class SearchController < ApplicationController
       # comments:       params[:comments]
     }
     @series = Series.search(params[:q], options).page(params[:page]).results
+    @series_2 = Series.search(params[:q], options).page(params[:page]).records
 
     respond_with @series
   end
