@@ -21,4 +21,4 @@ if(s.length>=3){
 } 	else {
 		e(".blog_search_wrapper ul").empty();
 		e("#results").hide();
-})
+}
